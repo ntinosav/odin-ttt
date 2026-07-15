@@ -9,12 +9,12 @@
 <body>
     <h1>Tic - Tac - Toe</h1>
     <div id="players">
-        <h2 id="p1">Ninos</h2>
-        <h2>     vs     </h2>
-        <h2 id="p2">John</h2>
+        <h2 id="p1"></h2>
+        <h2>vs</h2>
+        <h2 id="p2"></h2>
     </div>
 
-    <table>
+    <table id="board">
         <tr>
             <td id="11"></td>
             <td id="12"></td>
@@ -32,6 +32,13 @@
         </tr>
     </table>
     
+    <div id="currContainer">
+        <h2 >Current Player : </h2>
+        <h2 id="curr"></h2>
+    </div>
+    
+    <button id="new-game">New Game</button>
+
     <script src="script.js"></script>
 </body>
 </html>

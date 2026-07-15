@@ -1,108 +1,142 @@
-console.log("Test");
+function newGame(){
+    let name1 = prompt("Enter 1st player's name :");
+    let name2 = prompt("Enter 2nd player's name:");
+    const createPlayer = function (name, number, symbol) {
+        return {name, number, symbol};
+    }   
 
 
-// GameBoard Object
+    // 1st and 2nd properties: the two Players
+    const p1 = createPlayer(name1, 1, 'O');
+    const p2 = createPlayer(name2, 2, 'X');
+ 
+    // 3rd property : the GameBoard
 
-function  GameBoard() {
-    this.board = [['-','-','-'],['-','-','-'],['-','-','-']];
+    const createBoard = function(){
+        let board = [['-','-','-'],['-','-','-'],['-','-','-']];
 
-    this.showBoard = function() {
-        for (let i = 0; i < 3; i++) {
-            console.log(this.board[i][0], this.board[i][1], this.board[i][2]);
-    }
-};
+        function showBoard(){
+            for (let i = 0; i < 3; i++) {
+                console.log(board[i][0], board[i][1], board[i][2]);
+            }
+        };
 
-    this.resetBoard = function() {
-        for (let i=0; i < 3; i++){
-            for (let j=0; j < 3; j++){
-                this.board[i][j] = '-';
+        function resetBoard(){
+            for (let i=0; i < 3; i++){
+                for (let j=0; j < 3; j++){
+                    board[i][j] = '-';
+            }
+            }
+        };
+
+        function checkEmpty(x,y){
+            return board[x][y] != 'X' && board[x][y] != 'O';
+        };
+
+        function clearBoard() {
+        for (let i=0; i<3; i++){
+            for (let j=0; j<3; j++){
+                board[i][j] = '-';
             }
         }
-    };
+    }
+        
 
-    this.checkEmpty = function(x,y){
-        return this.board[x][y] != 'X' && this.board[x][y] != 'O';
-    };
-};
+        return {board, showBoard, resetBoard, checkEmpty, clearBoard};
+    }
+
+    const gBoard = createBoard();  
 
 
-
-function Player(name, symbol, number){
-    this.name = name;
-    this.symbol = symbol;
-    this.number = number;
-}
-
-const Game = {
-    end: false,
-    moves: 0,
-    p1: new Player('Ntinos', 'X', 1),
-    p2: new Player('John','O',2),
-    gb: new GameBoard(),
-
-    checkWin: function() {
+    function checkWin() {
         let win = false;
         // check Rows
         for (let i=0; i<3; i++){
-            if (this.gb.board[i][0] == this.gb.board[i][1] && this.gb.board[i][1] == this.gb.board[i][2] && this.gb.board[i][0] != '-'){
+            if (gBoard.board[i][0] == gBoard.board[i][1] && gBoard.board[i][1] == gBoard.board[i][2] && gBoard.board[i][0] != '-'){
                 win = true;
             }      
         }
 
         // check Columns
          for (let j=0; j<3; j++){
-            if (this.gb.board[0][j] == this.gb.board[1][j] && this.gb.board[1][j] == this.gb.board[2][j] && this.gb.board[0][j] != '-'){
+            if (gBoard.board[0][j] == gBoard.board[1][j] && gBoard.board[1][j] == gBoard.board[2][j] && gBoard.board[0][j] != '-'){
                 win = true;
             }      
         }
 
         // check Diagonally
-        if (this.gb.board[0][0] == this.gb.board[1][1] && this.gb.board[1][1] == this.gb.board[2][2] && this.gb.board[0][0] != '-'){
+        if (gBoard.board[0][0] == gBoard.board[1][1] && gBoard.board[1][1] == gBoard.board[2][2] && gBoard.board[0][0] != '-'){
             win = true;
         }
 
-        if (this.gb.board[0][2] == this.gb.board[1][1] && this.gb.board[1][1] == this.gb.board[2][0] && this.gb.board[0][2] != '-') {
+        if (gBoard.board[0][2] == gBoard.board[1][1] && gBoard.board[1][1] == gBoard.board[2][0] && gBoard.board[0][2] != '-') {
             win = true;
         }
         return win;
-    },
+    }
+    
 
-    playGame: function() {
-        let currPlayer = this.p1;
-        this.gb.showBoard();
-        while(!this.end){
+
+    //  Method : playGame
+
+    function playGame() {
+        let moves = 0;
+        let end = false;
+        
+        let currPlayer = p1;
+        gBoard.showBoard();
+        let replay = 'y';
+        while(!end && replay == 'y'){
             do {
                 row = prompt(`Player ${currPlayer.number} : Choose row :`);
                 col = prompt(`Player ${currPlayer.number} : Choose column :`);
                 if (row > 2 || col > 2){
                     empty = false;
                 }else{
-                    empty = this.gb.checkEmpty(row,col);
+                    empty = gBoard.checkEmpty(row,col);
                 }
             }while(!empty)
             
-            this.gb.board[row][col] = currPlayer.symbol;
-            this.moves++;
-            this.gb.showBoard();
-            console.log("+++++++++++++++++");
-            if (this.checkWin() || this.moves == 9){
-                this.end = true;
-            }else{
-                if (currPlayer === this.p1){
-                currPlayer = this.p2;
+            // Put symbol
+            gBoard.board[row][col] = currPlayer.symbol;
+            moves++;
+            gBoard.showBoard();
+            console.log('+++++++++++++++++++++++++++');
+            if (checkWin() || moves == 9){
+                end = true;
+                if (checkWin()){
+                    alert(`${currPlayer.name} is the winner`);
                 }else{
-                    currPlayer = this.p1;
+                    alert("It's a tie,");
+                }
+            }else{
+                if (currPlayer === p1){
+                    currPlayer = p2;
+                }else{
+                    currPlayer = p1;
+                }
+            }
+
+            if (end == true){
+                replay = prompt('Replay ? (y/n)');
+                if (replay == 'y'){
+                    moves = 0
+                    end = false;
+                    gBoard.clearBoard();
                 }
             }
             
         }
 
-        if (this.checkWin()){
-            alert(`${currPlayer.name} is the winner`);
-        }else{
-            alert("It's a tie.")
-        }
+
+
+
+
     }
+
+
+
+    return {p1, p2, gBoard, checkWin, playGame};
 }
 
-
+const game = newGame();

@@ -139,4 +139,40 @@ function newGame(){
     return {p1, p2, gBoard, checkWin, playGame};
 }
 
+
+function display(){
+
+    
+    const cells = [[0,0,0],[0,0,0],[0,0,0]];     
+    for (let i = 0; i < 3; i++){
+        for (let j = 0; j < 3; j++){
+            let elem = (i+1)*10+(j+1);
+            let elemStr = elem.toString();
+            cells[i][j] = document.getElementById(elemStr);
+            console.log(cells[i][j]);
+        }
+    }
+
+    // display names
+    function displayNames(){
+        const pl1 = document.getElementById("p1");
+        const pl2 = document.getElementById("p2");
+
+        pl1.innerText = game.p1.name;
+        pl2.innerText = game.p2.name;
+    }
+    
+    function displayBoard(){
+        for (let i = 0; i < 3; i++){
+            for (let j = 0; j < 3; j++){
+                cells[i][j].innerText = game.gBoard.board[i][j];
+            }
+        }
+    }
+    displayBoard();
+    
+}
+
+
 const game = newGame();
+display();

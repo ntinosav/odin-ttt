@@ -137,12 +137,14 @@ function display(){
 }
 
 
+let win = false;
+
 const cells = document.querySelectorAll("td>div");
 
 
 cells.forEach((cell) => {
     cell.addEventListener("click", () => {
-        if (begin){
+        if (begin && !win){
             let row = Math.floor(cell.id/10); 
             let col = Number(cell.id%10);
             console.log(row, col);
@@ -173,6 +175,7 @@ cells.forEach((cell) => {
                     }
                     
                 }else{
+                    win = true;
                     if (game.currPlayer === game.p1) {
                         pl1.style.color = 'green';
                     }else{
@@ -199,6 +202,7 @@ const newG = document.getElementById("new-game");
 
 newG.addEventListener("click", function() {
         begin = true;
+        win = false;
         moves = 0;
         let name1 = prompt("Enter 1st player's name :");
         let name2 = prompt("Enter 2nd player's name :");
@@ -207,12 +211,31 @@ newG.addEventListener("click", function() {
         screen.displayNames();
         game.currPlayer = game.p1;
         pl1.style.textDecorationLine = "underline";
+        pl1.style.color = 'blue'
         pl2.style.textDecorationLine = "none";
+        pl2.style.color = 'red';
         game.gBoard.clearBoard();
+        stat.innerText = ''
         screen.displayBoard()
 
     })
 
+const retry = document.getElementById("retry");
+
+retry.addEventListener("click", () => {
+    begin = true;
+    win = false;
+    moves = 0;
+    screen.displayNames();
+    game.currPlayer = game.p1;
+    pl1.style.textDecorationLine = "underline";
+    pl1.style.color = 'blue'
+    pl2.style.textDecorationLine = "none";
+    pl2.style.color = 'red';
+    game.gBoard.clearBoard();
+    stat.innerText = ''
+    screen.displayBoard()
+})
 
 
 const screen = display();

@@ -1,17 +1,28 @@
-const stat = document.getElementById("status");
-const newGB = document.getElementById("new-game");
-
 const players = document.getElementById("players");
-
 const pl1 = document.getElementById("p1");
 const pl2 = document.getElementById("p2");
 
+const cells = document.querySelectorAll("td>div");
+
+const stat = document.getElementById("status");
 
 
-function newGame(){
-    // let name1 = prompt("Enter 1st player's name :");
-    // let name2 = prompt("Enter 2nd player's name:");
+const newG = document.getElementById("new-game");
+const retry = document.getElementById("retry");
 
+
+
+let begin = false;
+let win = false;
+let moves = 0;
+let end = false;
+
+
+
+// newGame IIFE
+
+const game = (function newGame(){
+   
 
     const createPlayer = function (name, number, symbol) {
         return {name, number, symbol};
@@ -26,7 +37,7 @@ function newGame(){
     
     // 3rd property : the GameBoard
 
-    const createBoard = function(){
+    const gBoard =(function(){
         let board = [['-','-','-'],['-','-','-'],['-','-','-']];
 
         function showBoard(){
@@ -57,10 +68,9 @@ function newGame(){
         
 
         return {board, showBoard, resetBoard, checkEmpty, clearBoard};
-    }
+    })();
 
-    const gBoard = createBoard();  
-
+    
 
     function checkWin() {
         let win = false;
@@ -94,10 +104,13 @@ function newGame(){
 
 
     return {p1, p2, currPlayer, gBoard, checkWin};
-}
+})();
 
 
-function display(){
+
+
+// Display IIFE
+const screen = (function display(){
 
     
     const cells = [[0,0,0],[0,0,0],[0,0,0]];     
@@ -118,11 +131,6 @@ function display(){
         pl2.innerText = game.p2.name;
     }
 
-    // function displayCurrPlayer(player) {
-        
-
-    //     cPlayer.innerText = player.name;
-    // }
     
     function displayBoard(){
         for (let i = 0; i < 3; i++){
@@ -134,12 +142,12 @@ function display(){
     displayBoard();
     return {displayNames, displayBoard}
     
-}
+})();
+
+screen.displayNames()
 
 
-let win = false;
 
-const cells = document.querySelectorAll("td>div");
 
 
 cells.forEach((cell) => {
@@ -147,12 +155,9 @@ cells.forEach((cell) => {
         if (begin && !win){
             let row = Math.floor(cell.id/10); 
             let col = Number(cell.id%10);
-            console.log(row, col);
-            if (row > 3 || col > 3){
-                empty = false;
-            }else{
-                empty = game.gBoard.checkEmpty(row-1,col-1);
-            }
+            
+            let empty = game.gBoard.checkEmpty(row - 1, col - 1);
+      
         
             if (empty) {
                 game.gBoard.board[row-1][col-1] = game.currPlayer.symbol;
@@ -194,11 +199,7 @@ cells.forEach((cell) => {
 })
 
 
-let begin = false;
-const game = newGame();
 
-
-const newG = document.getElementById("new-game");
 
 newG.addEventListener("click", function() {
         begin = true;
@@ -220,7 +221,7 @@ newG.addEventListener("click", function() {
 
     })
 
-const retry = document.getElementById("retry");
+
 
 retry.addEventListener("click", () => {
     begin = true;
@@ -238,8 +239,5 @@ retry.addEventListener("click", () => {
 })
 
 
-const screen = display();
-screen.displayNames()
-let moves = 0;
-let end = false;
+
         

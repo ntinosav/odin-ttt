@@ -35,7 +35,23 @@ const game = (function newGame(){
 
     let currPlayer = p1;
     
-    // 3rd property : the GameBoard
+    
+    function switchPlayers(){
+        if (this.currPlayer === p1){
+              this.currPlayer = p2;
+              pl2.style.textDecorationLine = "underline";
+              pl1.style.textDecorationLine = "none";
+        }else{
+            this.currPlayer = p1;
+            pl1.style.textDecorationLine = "underline";
+            pl2.style.textDecorationLine = "none";
+        }
+    }
+
+    function setSymbol(x,y){
+        gBoard.board[x][y] = this.currPlayer.symbol;
+        moves++;
+    }
 
     const gBoard =(function(){
         let board = [['-','-','-'],['-','-','-'],['-','-','-']];
@@ -46,13 +62,6 @@ const game = (function newGame(){
             }
         };
 
-        function resetBoard(){
-            for (let i=0; i < 3; i++){
-                for (let j=0; j < 3; j++){
-                    board[i][j] = '-';
-            }
-            }
-        };
 
         function checkEmpty(x,y){
             return board[x][y] != 'X' && board[x][y] != 'O';
@@ -63,11 +72,10 @@ const game = (function newGame(){
             for (let j=0; j<3; j++){
                 board[i][j] = '-';
             }
-        }
-    }
-        
+            }
+        }        
 
-        return {board, showBoard, resetBoard, checkEmpty, clearBoard};
+        return {board, showBoard, checkEmpty, clearBoard};
     })();
 
     
@@ -103,7 +111,7 @@ const game = (function newGame(){
 
 
 
-    return {p1, p2, currPlayer, gBoard, checkWin};
+    return {p1, p2, currPlayer, gBoard, setSymbol, switchPlayers, checkWin};
 })();
 
 
@@ -119,7 +127,6 @@ const screen = (function display(){
             let elem = (i+1)*10+(j+1);
             let elemStr = elem.toString();
             cells[i][j] = document.getElementById(elemStr);
-            console.log(cells[i][j]);
         }
     }
 
@@ -157,24 +164,12 @@ cells.forEach((cell) => {
             let col = Number(cell.id%10);
             
             let empty = game.gBoard.checkEmpty(row - 1, col - 1);
-      
-        
             if (empty) {
-                game.gBoard.board[row-1][col-1] = game.currPlayer.symbol;
-                moves++;
+                game.setSymbol(row - 1, col -1);
                 screen.displayBoard();
                 if (!game.checkWin()){
                     if (moves != 9){
-                        if (game.currPlayer === game.p1) {
-                            game.currPlayer = game.p2;
-                            pl2.style.textDecorationLine = "underline";
-                            pl1.style.textDecorationLine = "none";
-                        }else{
-                            game.currPlayer = game.p1;
-                            pl1.style.textDecorationLine = "underline";
-                            pl2.style.textDecorationLine = "none";
-                        }
-                        // screen.displayCurrPlayer(game.currPlayer);  
+                        game.switchPlayers();
                     }else{
                         stat.innerText = "It's a tie.";
                     }
@@ -190,7 +185,6 @@ cells.forEach((cell) => {
                 }
                 
             }
-            // Put symbol
         }
 
             
@@ -224,18 +218,20 @@ newG.addEventListener("click", function() {
 
 
 retry.addEventListener("click", () => {
-    begin = true;
-    win = false;
-    moves = 0;
-    screen.displayNames();
-    game.currPlayer = game.p1;
-    pl1.style.textDecorationLine = "underline";
-    pl1.style.color = 'blue'
-    pl2.style.textDecorationLine = "none";
-    pl2.style.color = 'red';
-    game.gBoard.clearBoard();
-    stat.innerText = ''
-    screen.displayBoard()
+    if (begin){
+        win = false;
+        moves = 0;
+        screen.displayNames();
+        game.currPlayer = game.p1;
+        pl1.style.textDecorationLine = "underline";
+        pl1.style.color = 'blue'
+        pl2.style.textDecorationLine = "none";
+        pl2.style.color = 'red';
+        game.gBoard.clearBoard();
+        stat.innerText = ''
+        screen.displayBoard()
+    }
+    
 })
 
 

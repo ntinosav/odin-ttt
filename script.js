@@ -243,8 +243,3 @@ screen.displayNames()
 let moves = 0;
 let end = false;
         
-
-
-
-
-        

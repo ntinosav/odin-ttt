@@ -4,24 +4,48 @@ body {
     align-items: center;
 }
 
+
+
 #players {
     display: flex;
-    width: 300px;
+    width: 30ch;
+    font-size: 1.1rem;
     justify-content: space-between;
 }
 
 
 #board {
     outline: 1px solid blue;
+    width: 40%;
 }
 
 
 td {
     border: 1px solid red;
-    width: 150px;
-    height: 150px;  
+    width: 33.33%;
+    position: relative;  
     font-size: xx-large;
     text-align: center;
+    
+}
+
+td div {
+    outline: 1px solid red;
+    aspect-ratio: 1/1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 1em;
+}
+
+@media (min-width : 700px){
+    td div {
+        font-size: 2.5em;
+    }
+
+    #players {
+        font-size: 1.5rem;
+    }
 }
 
 #currContainer {
@@ -38,3 +62,4 @@ td {
     font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
     color: red;
 }
+

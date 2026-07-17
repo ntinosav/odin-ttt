@@ -17,7 +17,7 @@ body {
 
 #board {
     outline: 1px solid blue;
-    width: 40%;
+    width: 30%;
 }
 
 
@@ -63,3 +63,15 @@ td div {
     color: red;
 }
 
+
+#new-game, #retry {
+    color: white;
+    background-color: blue;
+    font-size: large;
+    padding: 0.5em 1em;
+    border-radius: 20px;
+}
+
+#new-game:hover, #retry:hover {
+    background-color: pink;
+}

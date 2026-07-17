@@ -1,5 +1,7 @@
-const cPlayer = document.getElementById("curr");
+const stat = document.getElementById("status");
 const newGB = document.getElementById("new-game");
+
+const players = document.getElementById("players");
 
 const pl1 = document.getElementById("p1");
 const pl2 = document.getElementById("p2");
@@ -116,11 +118,11 @@ function display(){
         pl2.innerText = game.p2.name;
     }
 
-    function displayCurrPlayer(player) {
+    // function displayCurrPlayer(player) {
         
 
-        cPlayer.innerText = player.name;
-    }
+    //     cPlayer.innerText = player.name;
+    // }
     
     function displayBoard(){
         for (let i = 0; i < 3; i++){
@@ -130,7 +132,7 @@ function display(){
         }
     }
     displayBoard();
-    return {displayNames, displayCurrPlayer, displayBoard}
+    return {displayNames, displayBoard}
     
 }
 
@@ -165,13 +167,18 @@ cells.forEach((cell) => {
                             pl1.style.textDecorationLine = "underline";
                             pl2.style.textDecorationLine = "none";
                         }
-                        screen.displayCurrPlayer(game.currPlayer);  
+                        // screen.displayCurrPlayer(game.currPlayer);  
                     }else{
-                        cPlayer.innerText = "It's a tie.";
+                        stat.innerText = "It's a tie.";
                     }
                     
                 }else{
-                    cPlayer.innerText = `${game.currPlayer.name} won !`;
+                    if (game.currPlayer === game.p1) {
+                        pl1.style.color = 'green';
+                    }else{
+                        pl2.style.color = 'green';
+                    }
+                    stat.innerText = `${game.currPlayer.name} won !`;
                 }
                 
             }
@@ -201,7 +208,6 @@ newG.addEventListener("click", function() {
         game.currPlayer = game.p1;
         pl1.style.textDecorationLine = "underline";
         pl2.style.textDecorationLine = "none";
-        screen.displayCurrPlayer(game.currPlayer);
         game.gBoard.clearBoard();
         screen.displayBoard()
 

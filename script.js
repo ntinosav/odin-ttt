@@ -6,8 +6,8 @@ const newGB = document.getElementById("new-game");
 
 
 function newGame(){
-    let name1 = prompt("Enter 1st player's name :");
-    let name2 = prompt("Enter 2nd player's name:");
+    // let name1 = prompt("Enter 1st player's name :");
+    // let name2 = prompt("Enter 2nd player's name:");
 
 
     const createPlayer = function (name, number, symbol) {
@@ -16,8 +16,8 @@ function newGame(){
 
 
     // 1st and 2nd properties: the two Players
-    const p1 = createPlayer(name1, 1, 'O');
-    const p2 = createPlayer(name2, 2, 'X');
+    const p1 = createPlayer('Player1', 1, 'O');
+    const p2 = createPlayer('Player2', 2, 'X');
 
     let currPlayer = p1;
     
@@ -198,9 +198,10 @@ function display(){
 
 const cells = document.querySelectorAll("td");
 
+
 cells.forEach((cell) => {
     cell.addEventListener("click", () => {
-        console.log(cell.id);
+        if (begin){
             let row = Math.floor(cell.id/10); 
             let col = Number(cell.id%10);
             console.log(row, col);
@@ -232,21 +233,45 @@ cells.forEach((cell) => {
                 
             }
             // Put symbol
+        }
+
             
             
 })
 })
 
 
-
+let begin = false;
 const game = newGame();
 
+
+const newG = document.getElementById("new-game");
+
+newG.addEventListener("click", function() {
+        begin = true;
+        moves = 0;
+        let name1 = prompt("Enter 1st player's name :");
+        let name2 = prompt("Enter 2nd player's name :");
+        game.p1.name = name1;
+        game.p2.name = name2;
+        screen.displayNames();
+        game.currPlayer = game.p1;
+        screen.displayCurrPlayer(game.currPlayer);
+        game.gBoard.clearBoard();
+        screen.displayBoard()
+
+    })
+
+
+
+const screen = display();
+screen.displayNames()
 let moves = 0;
 let end = false;
         
-const screen = display();
-screen.displayNames()
-screen.displayCurrPlayer(game.currPlayer);
+
+
+// screen.displayCurrPlayer(game.currPlayer);
 
 
         

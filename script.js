@@ -1,7 +1,8 @@
 const cPlayer = document.getElementById("curr");
 const newGB = document.getElementById("new-game");
 
-
+const pl1 = document.getElementById("p1");
+const pl2 = document.getElementById("p2");
 
 
 
@@ -88,68 +89,9 @@ function newGame(){
     
 
 
-    //  Method : playGame
-
-    function playGame() {
-        let moves = 0;
-        let end = false;
-        
-        let currPlayer = p1;
-        screen.displayBoard();
-        let replay = 'y';
-        screen.displayNames();
-        screen.displayCurrPlayer(currPlayer);
-        // while(!end && replay == 'y'){
-        //     do {
-        //         row = prompt(`Player ${currPlayer.number} : Choose row :`);
-        //         col = prompt(`Player ${currPlayer.number} : Choose column :`);
-        //         if (row > 2 || col > 2){
-        //             empty = false;
-        //         }else{
-        //             empty = gBoard.checkEmpty(row,col);
-        //         }
-        //     }while(!empty)
-            
-        //     // Put symbol
-        //     gBoard.board[row][col] = currPlayer.symbol;
-        //     moves++;
-        //     screen.displayBoard();
-        //     console.log('+++++++++++++++++++++++++++');
-        //     if (checkWin() || moves == 9){
-        //         end = true;
-        //         if (checkWin()){
-        //             alert(`${currPlayer.name} is the winner`);
-        //         }else{
-        //             alert("It's a tie,");
-        //         }
-        //     }else{
-        //         if (currPlayer === p1){
-        //             currPlayer = p2;
-        //         }else{
-        //             currPlayer = p1;
-        //         }
-        //     }
-
-        //     if (end == true){
-        //         replay = prompt('Replay ? (y/n)');
-        //         if (replay == 'y'){
-        //             moves = 0
-        //             end = false;
-        //             gBoard.clearBoard();
-        //         }
-        //     }
-            
-        // }
 
 
-
-
-
-    }
-
-
-
-    return {p1, p2, currPlayer, gBoard, checkWin, playGame};
+    return {p1, p2, currPlayer, gBoard, checkWin};
 }
 
 
@@ -168,10 +110,7 @@ function display(){
 
     // display names
     function displayNames(){
-        const pl1 = document.getElementById("p1");
-        const pl2 = document.getElementById("p2");
 
-        
 
         pl1.innerText = game.p1.name;
         pl2.innerText = game.p2.name;
@@ -196,7 +135,7 @@ function display(){
 }
 
 
-const cells = document.querySelectorAll("td");
+const cells = document.querySelectorAll("td>div");
 
 
 cells.forEach((cell) => {
@@ -219,8 +158,12 @@ cells.forEach((cell) => {
                     if (moves != 9){
                         if (game.currPlayer === game.p1) {
                             game.currPlayer = game.p2;
+                            pl2.style.textDecorationLine = "underline";
+                            pl1.style.textDecorationLine = "none";
                         }else{
                             game.currPlayer = game.p1;
+                            pl1.style.textDecorationLine = "underline";
+                            pl2.style.textDecorationLine = "none";
                         }
                         screen.displayCurrPlayer(game.currPlayer);  
                     }else{
@@ -256,6 +199,8 @@ newG.addEventListener("click", function() {
         game.p2.name = name2;
         screen.displayNames();
         game.currPlayer = game.p1;
+        pl1.style.textDecorationLine = "underline";
+        pl2.style.textDecorationLine = "none";
         screen.displayCurrPlayer(game.currPlayer);
         game.gBoard.clearBoard();
         screen.displayBoard()
@@ -271,7 +216,6 @@ let end = false;
         
 
 
-// screen.displayCurrPlayer(game.currPlayer);
 
 
         
